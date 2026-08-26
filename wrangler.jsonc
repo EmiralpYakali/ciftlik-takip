@@ -12,7 +12,7 @@
     {
       "binding": "DB",
       "database_name": "ibrahim-ciftligi-db",
-      "database_id": "00000000-0000-4000-8000-000000000000",
+      "database_id": "8418f5e2-1087-4ac8-95c1-b04542d77c97",
       "migrations_dir": "drizzle"
     }
   ]
