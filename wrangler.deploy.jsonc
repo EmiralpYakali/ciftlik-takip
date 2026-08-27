@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ibrahim-mudurun-ciftligi",
+  "main": "dist/server/index.js",
+  "compatibility_date": "2026-05-22",
+  "compatibility_flags": ["nodejs_compat"],
+  "no_bundle": true,
+  "assets": {
+    "directory": "dist/client",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ibrahim-ciftligi-db",
+      "database_id": "8418f5e2-1087-4ac8-95c1-b04542d77c97",
+      "migrations_dir": "drizzle"
+    }
+  ]
+}
