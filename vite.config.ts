@@ -7,11 +7,6 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === 'seatbelt';
 
 const localBindingConfig = {
   main: 'vinext/server/app-router-entry',
-  d1_databases: [{
-    binding: 'DB',
-    database_name: 'ibrahim-ciftligi-db',
-    database_id: '00000000-0000-4000-8000-000000000000',
-  }],
 };
 
 export default defineConfig(async () => {
@@ -38,4 +33,3 @@ export default defineConfig(async () => {
     ],
   };
 });
-
