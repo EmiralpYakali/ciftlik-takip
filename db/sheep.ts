@@ -87,7 +87,14 @@ export async function ensureDatabase() {
       'T' || printf('%04d', 1000 + n),
       1 + (n % 6),
       48 + (n % 31),
-      CASE n % 4 WHEN 0 THEN 'Akkaraman' WHEN 1 THEN 'Kıvırcık' WHEN 2 THEN 'Merinos' ELSE 'Karayaka' END,
+      CASE n % 6
+        WHEN 0 THEN 'Merinos Anaç'
+        WHEN 1 THEN 'Merinos Erkek'
+        WHEN 2 THEN 'Merinos Dişi'
+        WHEN 3 THEN 'Kıvırcık Anaç'
+        WHEN 4 THEN 'Kıvırcık Erkek'
+        ELSE 'Kıvırcık Dişi'
+      END,
       CASE n % 5 WHEN 0 THEN 'Koç' ELSE 'Dişi' END,
       CASE WHEN n % 28 = 0 THEN 'Kontrol' ELSE 'Sağlıklı' END,
       CASE WHEN n % 11 = 0 THEN 'Vitamin B12 · 12.08.2026' WHEN n % 17 = 0 THEN 'İç parazit ilacı · 04.08.2026' ELSE '' END,
@@ -95,9 +102,18 @@ export async function ensureDatabase() {
       datetime('now', '-' || n || ' minutes'),
       datetime('now', '-' || (365 - n) || ' days')
     FROM seq`).run();
-    await db.prepare(`UPDATE sheep SET age = 3, weight = 67, breed = 'Akkaraman', medications = 'İç parazit ilacı · 18.08.2026', notes = 'Genel durumu iyi.', updated_at = datetime('now') WHERE tag_number = 'T1111'`).run();
+    await db.prepare(`UPDATE sheep SET age = 3, weight = 67, breed = 'Merinos Anaç', medications = 'İç parazit ilacı · 18.08.2026', notes = 'Genel durumu iyi.', updated_at = datetime('now') WHERE tag_number = 'T1111'`).run();
   }
 
+  await db.prepare(`UPDATE sheep SET breed = CASE abs(random()) % 6
+    WHEN 0 THEN 'Merinos Anaç'
+    WHEN 1 THEN 'Merinos Erkek'
+    WHEN 2 THEN 'Merinos Dişi'
+    WHEN 3 THEN 'Kıvırcık Anaç'
+    WHEN 4 THEN 'Kıvırcık Erkek'
+    ELSE 'Kıvırcık Dişi'
+  END
+  WHERE breed NOT IN ('Merinos Anaç', 'Merinos Erkek', 'Merinos Dişi', 'Kıvırcık Anaç', 'Kıvırcık Erkek', 'Kıvırcık Dişi')`).run();
   await db.prepare(`UPDATE sheep SET birth_date = date('now', '-' || age || ' years') WHERE birth_date = ''`).run();
   await db.prepare(`INSERT INTO treatments (sheep_id, description, treatment_date, created_at)
     SELECT id, medications, date(updated_at), datetime('now') FROM sheep
